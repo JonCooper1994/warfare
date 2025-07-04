@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://beqwytmmo7g35"]
+
+[ext_resource type="Script" uid="uid://dlh2miu84op3l" path="res://src/Unit/Unit.cs" id="1_biyw0"]
+[ext_resource type="PackedScene" uid="uid://ioaj5a4lw1ll" path="res://src/Unit/Warrior.tscn" id="2_fngd8"]
+
+[node name="Unit" type="Node2D"]
+script = ExtResource("1_biyw0")
+warriorScene = ExtResource("2_fngd8")

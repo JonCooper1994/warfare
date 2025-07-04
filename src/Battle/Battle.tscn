@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://cyslbf1bw7mh6"]
+
+[ext_resource type="Script" uid="uid://cy06sv7qo58h0" path="res://src/Battle/Battle.cs" id="1_3tgvd"]
+[ext_resource type="PackedScene" uid="uid://beqwytmmo7g35" path="res://src/Unit/Unit.tscn" id="2_10j7t"]
+[ext_resource type="PackedScene" uid="uid://d3bqp0vn3q1aa" path="res://src/Battle/Marker.tscn" id="3_a5tg4"]
+[ext_resource type="Texture2D" uid="uid://haocn1jmxaqv" path="res://sprites/cube.png" id="4_10j7t"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_3tgvd")
+unitScene = ExtResource("2_10j7t")
+markerScene = ExtResource("3_a5tg4")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(262, 252)
+
+[node name="Cube" type="Sprite2D" parent="."]
+position = Vector2(174, 290)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube2" type="Sprite2D" parent="."]
+position = Vector2(174, 290)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube3" type="Sprite2D" parent="."]
+position = Vector2(206, 306)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube4" type="Sprite2D" parent="."]
+position = Vector2(238, 322)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube5" type="Sprite2D" parent="."]
+position = Vector2(142, 306)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube6" type="Sprite2D" parent="."]
+position = Vector2(174, 322)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube7" type="Sprite2D" parent="."]
+position = Vector2(206, 338)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube8" type="Sprite2D" parent="."]
+position = Vector2(111, 322)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube9" type="Sprite2D" parent="."]
+position = Vector2(143, 338)
+texture = ExtResource("4_10j7t")
+
+[node name="Cube10" type="Sprite2D" parent="."]
+position = Vector2(175, 354)
+texture = ExtResource("4_10j7t")

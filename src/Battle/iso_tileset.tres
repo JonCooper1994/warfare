@@ -1,0 +1,36 @@
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://1d1wwia6lyg"]
+
+[ext_resource type="Texture2D" uid="uid://bp4sdhr2j2lq3" path="res://sprites/iso-tile.png" id="1_5ufj6"]
+[ext_resource type="Texture2D" uid="uid://b0vl0dm8jwesr" path="res://sprites/corner.png" id="2_cxy5v"]
+[ext_resource type="Texture2D" uid="uid://b270aaf6exkvy" path="res://sprites/iso-tile-2.png" id="3_1me4d"]
+[ext_resource type="Texture2D" uid="uid://haocn1jmxaqv" path="res://sprites/cube.png" id="4_kblav"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cxy5v"]
+texture = ExtResource("1_5ufj6")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1me4d"]
+texture = ExtResource("2_cxy5v")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+0:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kblav"]
+texture = ExtResource("3_1me4d")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3658m"]
+texture = ExtResource("4_kblav")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+0:1/0 = 0
+
+[resource]
+tile_shape = 1
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_cxy5v")
+sources/1 = SubResource("TileSetAtlasSource_1me4d")
+sources/2 = SubResource("TileSetAtlasSource_kblav")
+sources/3 = SubResource("TileSetAtlasSource_3658m")
