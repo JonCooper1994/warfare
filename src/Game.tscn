@@ -1,12 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cywpu6lxdjhuu"]
+[gd_scene load_steps=2 format=3 uid="uid://cywpu6lxdjhuu"]
 
 [ext_resource type="PackedScene" uid="uid://cyslbf1bw7mh6" path="res://src/Battle/Battle.tscn" id="1_2c5w0"]
-[ext_resource type="Texture2D" uid="uid://haocn1jmxaqv" path="res://sprites/cube.png" id="2_kqvf5"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Battle" parent="." instance=ExtResource("1_2c5w0")]
-
-[node name="Cube" type="Sprite2D" parent="."]
-position = Vector2(287, 231)
-texture = ExtResource("2_kqvf5")
