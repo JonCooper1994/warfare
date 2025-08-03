@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://bc4xtdi2vs7bi"]
+
+[ext_resource type="Texture2D" uid="uid://cptl0yj0pf54h" path="res://sprites/fantasytiles/tree-evergreen.png" id="1_nva6q"]
+
+[node name="Node2D" type="Node2D"]
+position = Vector2(0, -2)
+
+[node name="Tree-evergreen" type="Sprite2D" parent="."]
+position = Vector2(-11.5, -9.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen2" type="Sprite2D" parent="."]
+position = Vector2(-4.5, -9.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen9" type="Sprite2D" parent="."]
+position = Vector2(8.5, -8.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen10" type="Sprite2D" parent="."]
+position = Vector2(13.5, -4.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen11" type="Sprite2D" parent="."]
+position = Vector2(7.5, -1.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen3" type="Sprite2D" parent="."]
+position = Vector2(0.5, -6.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen4" type="Sprite2D" parent="."]
+position = Vector2(-9.5, -4.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen5" type="Sprite2D" parent="."]
+position = Vector2(-2.5, -1.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen6" type="Sprite2D" parent="."]
+position = Vector2(-17.5, -2.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen7" type="Sprite2D" parent="."]
+position = Vector2(-8.5, 0.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen8" type="Sprite2D" parent="."]
+position = Vector2(3.5, 4.5)
+texture = ExtResource("1_nva6q")
+
+[node name="Tree-evergreen12" type="Sprite2D" parent="."]
+position = Vector2(11, 1)
+texture = ExtResource("1_nva6q")

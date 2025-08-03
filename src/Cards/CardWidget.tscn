@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://b783icff8s0vw"]
+
+[ext_resource type="Texture2D" uid="uid://bclho6obo1281" path="res://sprites/Cards/medium-card.png" id="1_advqc"]
+[ext_resource type="Script" uid="uid://c4xgmlfqo7pfe" path="res://src/Cards/CardWidget.cs" id="1_dsulx"]
+[ext_resource type="FontFile" uid="uid://cbkh7cev5kdmn" path="res://fonts/m3x6.ttf" id="2_46cun"]
+[ext_resource type="FontFile" uid="uid://ddjrx8oygry68" path="res://fonts/m5x7.ttf" id="3_dsulx"]
+
+[node name="CardWidget" type="Node2D"]
+z_index = 2000
+script = ExtResource("1_dsulx")
+
+[node name="Medium-card" type="Sprite2D" parent="."]
+texture = ExtResource("1_advqc")
+
+[node name="descriptionText" type="RichTextLabel" parent="."]
+offset_left = -35.0
+offset_top = 5.0
+offset_right = 35.0
+offset_bottom = 51.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_46cun")
+theme_override_font_sizes/normal_font_size = 16
+text = "*Activate 1*"
+fit_content = true
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="nameText" type="RichTextLabel" parent="."]
+offset_left = -35.0
+offset_top = -53.0
+offset_right = 35.0
+offset_bottom = -40.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_dsulx")
+theme_override_font_sizes/normal_font_size = 16
+text = "Run"
+fit_content = true
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true

@@ -1,0 +1,612 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1xirf34e77wy"]
+
+[ext_resource type="Script" uid="uid://cy06sv7qo58h0" path="res://src/Battle/Battle.cs" id="1_umbn8"]
+[ext_resource type="Texture2D" uid="uid://bnfthovest620" path="res://sprites/fantasytiles/waterhex.png" id="2_djcax"]
+[ext_resource type="Texture2D" uid="uid://jnu5vhwiivdt" path="res://sprites/Tiles/ship.png" id="3_8slts"]
+[ext_resource type="Texture2D" uid="uid://b3oallt87m4ol" path="res://sprites/fantasytiles/rocks.png" id="4_ccvnd"]
+[ext_resource type="Texture2D" uid="uid://c5u3redjcjyeh" path="res://sprites/Tiles/monster.png" id="5_8slts"]
+[ext_resource type="Texture2D" uid="uid://notias5lyr22" path="res://sprites/fantasytiles/hextest.png" id="6_ccvnd"]
+[ext_resource type="Texture2D" uid="uid://di67qaiib51a2" path="res://sprites/fantasytiles/tinyguy.png" id="7_x2eue"]
+[ext_resource type="Texture2D" uid="uid://cptl0yj0pf54h" path="res://sprites/fantasytiles/tree-evergreen.png" id="8_xgf0e"]
+[ext_resource type="Texture2D" uid="uid://516qv2dnjc3x" path="res://sprites/fantasytiles/catapult.png" id="10_4wak7"]
+[ext_resource type="Texture2D" uid="uid://cyjhijhmjasid" path="res://sprites/fantasytiles/tinyguyspear.png" id="11_4wak7"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_umbn8")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(281, 574)
+scale = Vector2(1.00148, 1.00746)
+zoom = Vector2(2, 2)
+
+[node name="Waterhex" type="Sprite2D" parent="."]
+position = Vector2(177, 485.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex3" type="Sprite2D" parent="."]
+position = Vector2(281, 485.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex5" type="Sprite2D" parent="."]
+position = Vector2(385, 485.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex4" type="Sprite2D" parent="."]
+position = Vector2(333, 498.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex2" type="Sprite2D" parent="."]
+position = Vector2(229, 498.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex6" type="Sprite2D" parent="."]
+position = Vector2(177, 511.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex7" type="Sprite2D" parent="."]
+position = Vector2(281, 511.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex8" type="Sprite2D" parent="."]
+position = Vector2(385, 511.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex9" type="Sprite2D" parent="."]
+position = Vector2(333, 524.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex10" type="Sprite2D" parent="."]
+position = Vector2(229, 524.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex11" type="Sprite2D" parent="."]
+position = Vector2(177, 537.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex12" type="Sprite2D" parent="."]
+position = Vector2(281, 537.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex13" type="Sprite2D" parent="."]
+position = Vector2(385, 537.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex14" type="Sprite2D" parent="."]
+position = Vector2(333, 550.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex15" type="Sprite2D" parent="."]
+position = Vector2(229, 550.5)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex16" type="Sprite2D" parent="."]
+position = Vector2(177, 563)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex17" type="Sprite2D" parent="."]
+position = Vector2(281, 563)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex18" type="Sprite2D" parent="."]
+position = Vector2(385, 563)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex19" type="Sprite2D" parent="."]
+position = Vector2(333, 576)
+texture = ExtResource("2_djcax")
+
+[node name="Waterhex20" type="Sprite2D" parent="."]
+position = Vector2(229, 576)
+texture = ExtResource("2_djcax")
+
+[node name="Ship" type="Sprite2D" parent="."]
+position = Vector2(229, 517.5)
+texture = ExtResource("3_8slts")
+
+[node name="Rocks" type="Sprite2D" parent="."]
+position = Vector2(229, 552.5)
+texture = ExtResource("4_ccvnd")
+
+[node name="Rocks2" type="Sprite2D" parent="."]
+position = Vector2(268, 513.5)
+texture = ExtResource("4_ccvnd")
+
+[node name="Rocks3" type="Sprite2D" parent="."]
+position = Vector2(231, 500.5)
+texture = ExtResource("4_ccvnd")
+
+[node name="Rocks4" type="Sprite2D" parent="."]
+position = Vector2(293, 511.5)
+texture = ExtResource("4_ccvnd")
+
+[node name="Monster" type="Sprite2D" parent="."]
+position = Vector2(229, 569.5)
+texture = ExtResource("5_8slts")
+
+[node name="Hextest" type="Sprite2D" parent="."]
+position = Vector2(267, 588.5)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest5" type="Sprite2D" parent="."]
+position = Vector2(357, 588.5)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest2" type="Sprite2D" parent="."]
+position = Vector2(177, 588.5)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest3" type="Sprite2D" parent="."]
+position = Vector2(221.5, 601.5)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest4" type="Sprite2D" parent="."]
+position = Vector2(312, 601.5)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest6" type="Sprite2D" parent="."]
+position = Vector2(267, 614)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest7" type="Sprite2D" parent="."]
+position = Vector2(357, 614)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest8" type="Sprite2D" parent="."]
+position = Vector2(177, 614)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest9" type="Sprite2D" parent="."]
+position = Vector2(221.5, 627)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest10" type="Sprite2D" parent="."]
+position = Vector2(312, 627)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest11" type="Sprite2D" parent="."]
+position = Vector2(267, 640)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest12" type="Sprite2D" parent="."]
+position = Vector2(357, 640)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest13" type="Sprite2D" parent="."]
+position = Vector2(177, 640)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest14" type="Sprite2D" parent="."]
+position = Vector2(221.5, 653)
+texture = ExtResource("6_ccvnd")
+
+[node name="Hextest15" type="Sprite2D" parent="."]
+position = Vector2(312, 653)
+texture = ExtResource("6_ccvnd")
+
+[node name="Tinyguy" type="Sprite2D" parent="."]
+position = Vector2(229.5, 589.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy2" type="Sprite2D" parent="."]
+position = Vector2(234.5, 591.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy3" type="Sprite2D" parent="."]
+position = Vector2(238.5, 594.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy4" type="Sprite2D" parent="."]
+position = Vector2(242.5, 597.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy5" type="Sprite2D" parent="."]
+position = Vector2(238.5, 598.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy6" type="Sprite2D" parent="."]
+position = Vector2(233.5, 595.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy7" type="Sprite2D" parent="."]
+position = Vector2(228.5, 592.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy8" type="Sprite2D" parent="."]
+position = Vector2(223.5, 589.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy9" type="Sprite2D" parent="."]
+position = Vector2(215.5, 590.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy10" type="Sprite2D" parent="."]
+position = Vector2(221.5, 594.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy11" type="Sprite2D" parent="."]
+position = Vector2(226.5, 596.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy12" type="Sprite2D" parent="."]
+position = Vector2(229.5, 599.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy13" type="Sprite2D" parent="."]
+position = Vector2(234.5, 601.5)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy14" type="Sprite2D" parent="."]
+position = Vector2(271, 629)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy15" type="Sprite2D" parent="."]
+position = Vector2(276, 631)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy16" type="Sprite2D" parent="."]
+position = Vector2(280, 634)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy17" type="Sprite2D" parent="."]
+position = Vector2(286, 636)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy18" type="Sprite2D" parent="."]
+position = Vector2(280, 638)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy19" type="Sprite2D" parent="."]
+position = Vector2(275, 635)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy20" type="Sprite2D" parent="."]
+position = Vector2(270, 632)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy21" type="Sprite2D" parent="."]
+position = Vector2(265, 629)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy22" type="Sprite2D" parent="."]
+position = Vector2(257, 630)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy23" type="Sprite2D" parent="."]
+position = Vector2(263, 634)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy24" type="Sprite2D" parent="."]
+position = Vector2(268, 636)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy25" type="Sprite2D" parent="."]
+position = Vector2(271, 639)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy26" type="Sprite2D" parent="."]
+position = Vector2(276, 641)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy27" type="Sprite2D" parent="."]
+position = Vector2(360, 603)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy28" type="Sprite2D" parent="."]
+position = Vector2(365, 605)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy29" type="Sprite2D" parent="."]
+position = Vector2(369, 608)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy30" type="Sprite2D" parent="."]
+position = Vector2(373, 611)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy31" type="Sprite2D" parent="."]
+position = Vector2(369, 612)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy32" type="Sprite2D" parent="."]
+position = Vector2(364, 609)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy33" type="Sprite2D" parent="."]
+position = Vector2(359, 606)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy34" type="Sprite2D" parent="."]
+position = Vector2(354, 603)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy35" type="Sprite2D" parent="."]
+position = Vector2(346, 604)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy36" type="Sprite2D" parent="."]
+position = Vector2(352, 608)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy37" type="Sprite2D" parent="."]
+position = Vector2(357, 610)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy38" type="Sprite2D" parent="."]
+position = Vector2(360, 613)
+texture = ExtResource("7_x2eue")
+
+[node name="Tinyguy39" type="Sprite2D" parent="."]
+position = Vector2(365, 615)
+texture = ExtResource("7_x2eue")
+
+[node name="Tree-evergreen" type="Sprite2D" parent="."]
+position = Vector2(269, 572.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen2" type="Sprite2D" parent="."]
+position = Vector2(276, 572.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen9" type="Sprite2D" parent="."]
+position = Vector2(289, 573.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen10" type="Sprite2D" parent="."]
+position = Vector2(294, 577.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen11" type="Sprite2D" parent="."]
+position = Vector2(288, 580.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen3" type="Sprite2D" parent="."]
+position = Vector2(281, 575.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen4" type="Sprite2D" parent="."]
+position = Vector2(271, 577.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen5" type="Sprite2D" parent="."]
+position = Vector2(278, 580.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen6" type="Sprite2D" parent="."]
+position = Vector2(263, 579.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen7" type="Sprite2D" parent="."]
+position = Vector2(272, 582.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen8" type="Sprite2D" parent="."]
+position = Vector2(284, 586.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen12" type="Sprite2D" parent="."]
+position = Vector2(298, 583.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen25" type="Sprite2D" parent="."]
+position = Vector2(301.5, 611.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen26" type="Sprite2D" parent="."]
+position = Vector2(308.5, 611.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen27" type="Sprite2D" parent="."]
+position = Vector2(321.5, 612.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen28" type="Sprite2D" parent="."]
+position = Vector2(326.5, 616.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen29" type="Sprite2D" parent="."]
+position = Vector2(320.5, 619.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen30" type="Sprite2D" parent="."]
+position = Vector2(313.5, 614.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen31" type="Sprite2D" parent="."]
+position = Vector2(303.5, 616.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen32" type="Sprite2D" parent="."]
+position = Vector2(310.5, 619.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen33" type="Sprite2D" parent="."]
+position = Vector2(295.5, 618.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen34" type="Sprite2D" parent="."]
+position = Vector2(304.5, 621.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen35" type="Sprite2D" parent="."]
+position = Vector2(316.5, 625.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen36" type="Sprite2D" parent="."]
+position = Vector2(330.5, 622.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen37" type="Sprite2D" parent="."]
+position = Vector2(373.5, 574.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen38" type="Sprite2D" parent="."]
+position = Vector2(380.5, 574.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen39" type="Sprite2D" parent="."]
+position = Vector2(393.5, 575.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen40" type="Sprite2D" parent="."]
+position = Vector2(398.5, 579.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen41" type="Sprite2D" parent="."]
+position = Vector2(392.5, 582.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen42" type="Sprite2D" parent="."]
+position = Vector2(385.5, 577.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen43" type="Sprite2D" parent="."]
+position = Vector2(375.5, 579.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen44" type="Sprite2D" parent="."]
+position = Vector2(382.5, 582.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen45" type="Sprite2D" parent="."]
+position = Vector2(367.5, 581.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen46" type="Sprite2D" parent="."]
+position = Vector2(376.5, 584.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen47" type="Sprite2D" parent="."]
+position = Vector2(388.5, 588.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen48" type="Sprite2D" parent="."]
+position = Vector2(402.5, 585.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen13" type="Sprite2D" parent="."]
+position = Vector2(163.5, 573)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen14" type="Sprite2D" parent="."]
+position = Vector2(170.5, 573)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen15" type="Sprite2D" parent="."]
+position = Vector2(183.5, 574)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen16" type="Sprite2D" parent="."]
+position = Vector2(188, 579.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen17" type="Sprite2D" parent="."]
+position = Vector2(186, 584.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen18" type="Sprite2D" parent="."]
+position = Vector2(175.5, 576)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen19" type="Sprite2D" parent="."]
+position = Vector2(165.5, 578)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen20" type="Sprite2D" parent="."]
+position = Vector2(173, 582.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen21" type="Sprite2D" parent="."]
+position = Vector2(157.5, 580)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen22" type="Sprite2D" parent="."]
+position = Vector2(167, 585.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen23" type="Sprite2D" parent="."]
+position = Vector2(180, 583.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Tree-evergreen24" type="Sprite2D" parent="."]
+position = Vector2(196, 578.5)
+texture = ExtResource("8_xgf0e")
+
+[node name="Catapult" type="Sprite2D" parent="."]
+position = Vector2(223.5, 641.5)
+texture = ExtResource("10_4wak7")
+
+[node name="Catapult2" type="Sprite2D" parent="."]
+position = Vector2(237.5, 647.5)
+texture = ExtResource("10_4wak7")
+
+[node name="Catapult3" type="Sprite2D" parent="."]
+position = Vector2(206.5, 643.5)
+texture = ExtResource("10_4wak7")
+
+[node name="Catapult4" type="Sprite2D" parent="."]
+position = Vector2(219.5, 651.5)
+texture = ExtResource("10_4wak7")
+
+[node name="Tinyguyspear" type="Sprite2D" parent="."]
+position = Vector2(273, 604)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear6" type="Sprite2D" parent="."]
+position = Vector2(258, 611)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear7" type="Sprite2D" parent="."]
+position = Vector2(264, 612)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear8" type="Sprite2D" parent="."]
+position = Vector2(268, 616)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear9" type="Sprite2D" parent="."]
+position = Vector2(274, 618)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear2" type="Sprite2D" parent="."]
+position = Vector2(279, 605)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear3" type="Sprite2D" parent="."]
+position = Vector2(283, 609)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear4" type="Sprite2D" parent="."]
+position = Vector2(289, 611)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear5" type="Sprite2D" parent="."]
+position = Vector2(267, 602)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear10" type="Sprite2D" parent="."]
+position = Vector2(252, 607)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear11" type="Sprite2D" parent="."]
+position = Vector2(262, 605)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear12" type="Sprite2D" parent="."]
+position = Vector2(268, 606)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear13" type="Sprite2D" parent="."]
+position = Vector2(272, 610)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear14" type="Sprite2D" parent="."]
+position = Vector2(278, 612)
+texture = ExtResource("11_4wak7")
+
+[node name="Tinyguyspear15" type="Sprite2D" parent="."]
+position = Vector2(256, 603)
+texture = ExtResource("11_4wak7")
+
+[node name="Ship2" type="Sprite2D" parent="."]
+position = Vector2(330, 543)
+texture = ExtResource("3_8slts")

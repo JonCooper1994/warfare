@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://br6725jsokm1x"]
+
+[ext_resource type="Texture2D" uid="uid://cpu8qvfqwoonv" path="res://sprites/fantasytiles/rocks3.png" id="1_aw0po"]
+
+[node name="Tree" type="Node2D"]
+
+[node name="Rocks2" type="Sprite2D" parent="."]
+position = Vector2(4, 0)
+texture = ExtResource("1_aw0po")

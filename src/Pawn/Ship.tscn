@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://y4ie4ivvqi0a"]
+
+[ext_resource type="Script" uid="uid://8u6dr2h3xgyq" path="res://src/Pawn/Ship.cs" id="1_bkocf"]
+[ext_resource type="Texture2D" uid="uid://do6ri0u8vv0yu" path="res://sprites/ship_spritesheet.png" id="2_bkocf"]
+
+[node name="Pawn" type="Node2D"]
+script = ExtResource("1_bkocf")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+texture = ExtResource("2_bkocf")
+hframes = 8

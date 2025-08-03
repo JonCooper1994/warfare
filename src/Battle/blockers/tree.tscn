@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqql5dlcx52iu"]
+
+[ext_resource type="Texture2D" uid="uid://dn0lkb0s7j1sj" path="res://sprites/fantasytiles/tree-cluster-1.png" id="1_u7uda"]
+[ext_resource type="Texture2D" uid="uid://14g3r1hvmyqx" path="res://sprites/fantasytiles/tree-cluster-2.png" id="2_2tp8m"]
+[ext_resource type="Texture2D" uid="uid://kyxrq04jbgel" path="res://sprites/fantasytiles/tree-cluster-3.png" id="3_r8vqv"]
+[ext_resource type="Texture2D" uid="uid://bxbqqms3q2q8t" path="res://sprites/fantasytiles/tree-single-1.png" id="4_fed07"]
+
+[node name="Tree" type="Node2D"]
+
+[node name="Tree-cluster-1" type="Sprite2D" parent="."]
+position = Vector2(-7.5, -6.5)
+texture = ExtResource("1_u7uda")
+
+[node name="Tree-cluster-4" type="Sprite2D" parent="."]
+position = Vector2(-16.5, -2.5)
+texture = ExtResource("2_2tp8m")
+
+[node name="Tree-cluster-4" type="Sprite2D" parent="Tree-cluster-4"]
+position = Vector2(25.5, 9.5)
+texture = ExtResource("2_2tp8m")
+
+[node name="Tree-cluster-5" type="Sprite2D" parent="."]
+position = Vector2(0.5, -3.5)
+texture = ExtResource("3_r8vqv")
+
+[node name="Tree-cluster-3" type="Sprite2D" parent="."]
+position = Vector2(-12.5, 2.5)
+texture = ExtResource("1_u7uda")
+
+[node name="Tree-cluster-3" type="Sprite2D" parent="Tree-cluster-3"]
+position = Vector2(23.5, -3.5)
+texture = ExtResource("1_u7uda")
+
+[node name="Tree-single-1" type="Sprite2D" parent="."]
+position = Vector2(-1.5, 0.5)
+texture = ExtResource("4_fed07")
+
+[node name="Tree-single-1" type="Sprite2D" parent="Tree-single-1"]
+position = Vector2(4.5, -10.5)
+texture = ExtResource("4_fed07")
+
+[node name="Tree-single-1" type="Sprite2D" parent="Tree-single-1/Tree-single-1"]
+position = Vector2(-3, 21)
+texture = ExtResource("4_fed07")
+
+[node name="Tree-cluster-6" type="Sprite2D" parent="."]
+position = Vector2(-2.5, 5.5)
+texture = ExtResource("2_2tp8m")

@@ -60,6 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\Battle\" />
+    <Content Include="src\blenderscript.py" />
   </ItemGroup>
 </Project>
