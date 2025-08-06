@@ -6,107 +6,253 @@ using Warfare.Battle;
 
 public partial class Battle : Node2D
 {
+  // TILES
   [Export] private PackedScene tileScene;
-  [Export] private PackedScene[] blockerScenes;
-  [Export] private PackedScene playerShipScene;
+  [Export] private PackedScene borderTileScene;
+  [Export] private PackedScene[] obstacleScenes;
+  [Export] private Godot.Collections.Dictionary<TileType, PackedScene> windScenes;
 
-  [Export] private int size;
+
+
+
+  [Export] private PackedScene playerShipScene;
 
   private Vector2I hoveredGridPos;
   private Ship playerShip;
   private Hand hand;
 
-  private float zoom = 3.0f;
+  public List<Ship> ships = new();
+  public int CurrentOrderIndex;
+  public int MAX_ORDERS = 4;
 
+  private float zoom = 2.0f;
 
-  private Godot.Collections.Dictionary<Vector2I, Tile> allTiles = new();
-  private Godot.Collections.Dictionary<Vector2I, Ship> allShips = new();
+  [Export]
+  private Vector2I size;
 
-  private Godot.Collections.Dictionary<Vector2I, bool> blockedTiles = new();
+  private Dictionary<Vector2I, TileType> tileTypes = new();
+  private Dictionary<Vector2I, Tile> tiles = new();
+  private Dictionary<Vector2I, Ship> allShips = new();
 
   bool IsPlayerTurn = true;
   private int PlayerEnergy = 5;
 
-  private LineDrawer lineDrawer = new();
+  private bool IsRunning = false;
+
+  private State state = State.BetweenRounds;
+
+  enum State {
+    BetweenRounds,
+    CalculateMoves,
+    ExecuteMoves,
+    CalculateEnvironmentMoves,
+    ExecuteEnvironmentMoves,
+    CalculateShooting,
+    ExecuteShooting,
+    NextOrder
+  }
 
   public override void _Ready()
   {
     GD.Randomize();
-
-    AddChild(lineDrawer);
-
     GetNode<Camera2D>("Camera2D").SetZoom(new Vector2(zoom, zoom));
 
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        SpawnTile(new Vector2I(i, j));
+    tileTypes = new MapGenerator(size).Generate(15, 3, 0);
+    foreach (var keyValuePair in tileTypes)
+    {
+      var gridPos = keyValuePair.Key;
+      var tileType = keyValuePair.Value;
 
-        if (GD.Randf() < 0.2) {
-          blockedTiles.Add(new Vector2I(i, j), true);
-          SpawnBlocker(new Vector2I(i, j));
-        }
-        else {
-          blockedTiles.Add(new Vector2I(i, j), false);
-        }
-      }
+      SpawnTile(gridPos, tileType);
     }
 
     SpawnShip(new Vector2I(5, 5));
   }
 
   public override void _Process(double delta) {
-    foreach (var keyValuePair in allTiles)
-    {
-      var tile = keyValuePair.Value;
-      tile.SetState(TileUIState.Normal);
+    // CALCULATE MOVES
+    if (state == State.CalculateMoves) {
+      CalculateMoves();
+      state = State.ExecuteMoves;
+      return;
     }
 
-    foreach (var keyValuePair in blockedTiles) {
-      var gridPos = keyValuePair.Key;
-      var isBlocked = keyValuePair.Value;
+    // EXECUTE MOVES
+    if (state == State.ExecuteMoves) {
+      var done = ExecuteMoves((float)delta);
+      if (done) {
+        state = State.CalculateEnvironmentMoves;
+      }
 
-      var tile = allTiles[gridPos];
-      if (isBlocked) {
-        tile.SetState(TileUIState.Blocked);
+      return;
+    }
+
+    // CALCULATE ENVIRONMENT MOVES
+    if (state == State.CalculateEnvironmentMoves) {
+      CalculateEnvironmentMoves();
+      state = State.ExecuteEnvironmentMoves;
+      return;
+    }
+
+    // EXECUTE ENVIRONMENT MOVES
+    if (state == State.ExecuteEnvironmentMoves) {
+      var done = ExecuteMoves((float)delta);
+      if (done) {
+        state = State.NextOrder;
+      }
+
+      return;
+    }
+
+    // NEXT ORDER
+    if (state == State.NextOrder) {
+      CurrentOrderIndex++;
+      if (CurrentOrderIndex < MAX_ORDERS) {
+        state = State.CalculateMoves;
+      }
+      else {
+        ResetAll();
+        state = State.BetweenRounds;
+      }
+      return;
+    }
+  }
+
+  public void ResetAll() {
+    GD.Print("RESET");
+    CurrentOrderIndex = 0;
+    foreach (var ship in ships) {
+      ship.ResetRound();
+    }
+  }
+
+  public void CalculateMoves() {
+    foreach(var ship in ships) {
+      ship.ResetTurn();
+
+      var order = ship.MoveOrders[CurrentOrderIndex];
+
+      ship.CurrentRotationPath = new() {
+        ship.CurrentRotation,
+        order.directionChange(ship.Direction).RotationDegrees(),
+      };
+
+      ship.FinalGridPath = new(
+        ship.Direction,
+        order.pathTaken(ship.Direction, ship.GridPosition)
+      );
+
+      ship.Direction = order.directionChange(ship.Direction);
+    }
+
+    ProcessCollisions();
+  }
+
+  public void CalculateEnvironmentMoves() {
+    foreach(var ship in ships) {
+      ship.ResetTurn();
+
+      var tile = tileTypes[ship.GridPosition];
+
+      ship.FinalGridPath = new(ship.Direction, tile.PushPath(ship.GridPosition));
+    }
+
+    ProcessCollisions();
+  }
+
+  public bool ExecuteMoves(float delta) {
+    var allShipsDone = true;
+
+    foreach(var ship in ships) {
+      var done = ship.AnimateMove(delta);
+      if(!done) {
+        allShipsDone = false;
       }
     }
 
-    foreach (var keyValuePair in allShips)
-    {
-        var pawn = keyValuePair.Value;
-        var tile = allTiles[pawn.GridPosition];
-        if (pawn.Faction == Faction.Player) {
-          tile.SetState(TileUIState.PlayerPawn);
-        }
-        else {
-          tile.SetState(TileUIState.EnemyPawn);
-        }
+    return allShipsDone;
+  }
+
+  public void ProcessCollisions() {
+
+    foreach (var ship in ships) {
+      ship.FullGridPath = new();
+
+      // Set the full grid path before collisions
+      foreach (var x in ship.FinalGridPath.path) {
+        ship.FullGridPath.Add(x);
+      }
     }
 
-    if (allTiles.ContainsKey(hoveredGridPos)) {
-      var hoveredTile = allTiles[hoveredGridPos];
+    // Step 0 is the ships original position so ignore it
+    for (int step = 1; step <= 2; step++) {
+      foreach (var ship in ships) {
+        var gridPos = ship.FinalGridPath.PosAtStep(step);
+        var previousPosition = ship.FinalGridPath.PosAtStep(step - 1);
+
+        //Environment collisions
+        if (ship.FinalGridPath.HasCollided()) { continue; }
+
+        if (tileTypes[gridPos].IsSolid()) {
+          ship.FinalGridPath.Collide(step);
+        }
+
+        //Other ship collisions
+        foreach (var otherShip in ships) {
+          if (ship == otherShip) { continue; } // Skip if its the same ship
+
+          if (ship.FinalGridPath.HasCollided()) { continue; } // Ship has already collided so skip it
+
+          var positionOther = otherShip.FinalGridPath.PosAtStep(step);
+          var previousPositionOther = otherShip.FinalGridPath.PosAtStep(step - 1);
+
+          if (gridPos == positionOther) {
+            ship.FinalGridPath.Collide(step);
+          }
+
+          // Check if ships are swapping position - this is also a collision
+          if (gridPos == previousPositionOther && positionOther == previousPosition) {
+            ship.FinalGridPath.Collide(step);
+          }
+        }
+      }
+    }
+
+    foreach(var ship in ships){
+      if (ship.FullGridPath.Count > 0) {
+        ship.GridPosition = ship.FinalGridPath.path.Last();
+      }
+
+      // Figure out how far through the movement a collision ocurred
+      if(ship.FinalGridPath.hasCollided) {
+        ship.CollisionPoint = (float)ship.FinalGridPath.path.Count / (float)ship.FullGridPath.Count;
+      } else {
+        ship.CollisionPoint = 99.0f; // NO COLLISION
+      }
     }
   }
 
-  private void SpawnTile(Vector2I gridPos) {
-    var newTile = tileScene.Instantiate<Tile>();
+  private void SpawnTile(Vector2I gridPos, TileType tileType) {
 
+    var tileSceneToSpawn = tileType.IsBorder() ? borderTileScene : tileScene;
+
+    var newTile = tileSceneToSpawn.Instantiate<Tile>();
     newTile.Position = GridUtils.GridToWorldPos(gridPos);
-
-    allTiles.Add(gridPos, newTile);
-
+    tiles.Add(gridPos, newTile);
     CallDeferred("add_child", newTile);
-  }
 
-  private void SpawnBlocker(Vector2I gridPos) {
+    if (tileType == TileType.Obstacle) {
+      var randomIndex = (int)(GD.Randi() % obstacleScenes.Length);
+      var newObstacle = obstacleScenes[randomIndex].Instantiate<Node2D>();
+      newObstacle.Position = GridUtils.GridToWorldPos(gridPos);
+      CallDeferred("add_child", newObstacle);
+    }
 
-    var randomIndex = (int)(GD.Randi() % blockerScenes.Length);
-
-    var newTree = blockerScenes[randomIndex].Instantiate<Node2D>();
-
-    newTree.Position = GridUtils.GridToWorldPos(gridPos);
-
-    CallDeferred("add_child", newTree);
+    if (tileType == TileType.PushNorth || tileType == TileType.PushWest || tileType == TileType.PushSouth || tileType == TileType.PushEast) {
+      var newWind = windScenes[tileType].Instantiate<Node2D>();
+      newWind.Position = GridUtils.GridToWorldPos(gridPos);
+      CallDeferred("add_child", newWind);
+    }
   }
 
   private void SpawnShip(Vector2I gridPos) {
@@ -114,6 +260,7 @@ public partial class Battle : Node2D
     newShip = playerShipScene.Instantiate<Ship>();
 
     playerShip = newShip;
+    ships.Add(newShip);
 
     newShip.Position = GridUtils.GridToWorldPos(gridPos);
     newShip.GridPosition = gridPos;
@@ -128,192 +275,27 @@ public partial class Battle : Node2D
 
     hoveredGridPos = gridPos;
 
-    if(Input.IsKeyPressed(Key.Left))
-    {
-      playerShip.ExecuteMove(Move.Left);
+    if(Input.IsKeyPressed(Key.Left)) {
+      playerShip.MoveOrders.Add(Move.Left);
     }
 
     if(Input.IsKeyPressed(Key.Right))
     {
-      playerShip.ExecuteMove(Move.Right);
+      playerShip.MoveOrders.Add(Move.Right);
     }
 
     if (Input.IsKeyPressed(Key.Up)) {
-      playerShip.ExecuteMove(Move.Forward);
-    }
-  }
-
-
-  public Dictionary<Vector2I, PathNode> GetAllPaths(Vector2I start, int maxDistance)
-  {
-    var openList = new Queue<PathNode>();
-    var paths = new Dictionary<Vector2I, PathNode>();
-    var visited = new HashSet<Vector2I>();
-
-    // Add starting node
-    var startNode = new PathNode(start)
-    {
-      Cost = 0 // Distance from the start to itself is 0
-    };
-    openList.Enqueue(startNode);
-    visited.Add(start);
-
-    // BFS
-    while (openList.Count > 0)
-    {
-      var currentNode = openList.Dequeue();
-
-      // Stop traversing neighbors if max distance is reached
-      if (currentNode.Cost >= maxDistance)
-      {
-        continue;
-      }
-
-      foreach (var neighbor in GetNeighbors(currentNode.GridPosition))
-      {
-        // Skip if already visited
-        if (visited.Contains(neighbor))
-        {
-          continue;
-        }
-
-        // Mark node as visited
-        visited.Add(neighbor);
-
-        // Create neighbor node
-        var neighborNode = new PathNode(neighbor)
-        {
-          Parent = currentNode,
-          Cost = currentNode.Cost + 1
-        };
-
-        // Add to open list and paths
-        openList.Enqueue(neighborNode);
-        paths[neighbor] = neighborNode;
-      }
+      playerShip.MoveOrders.Add(Move.Forward);
     }
 
-    return paths; // Return reachable nodes with their paths
-  }
-  private List<Vector2I> GetNeighbors(Vector2I gridPos) {
-    var neighbors = new List<Vector2I>();
-
-    var up = new Vector2I(gridPos.X, gridPos.Y - 1);
-    var down = new Vector2I(gridPos.X, gridPos.Y + 1);
-    var left = new Vector2I(gridPos.X - 1, gridPos.Y);
-    var right = new Vector2I(gridPos.X + 1, gridPos.Y );
-
-    if (IsTileInBounds(up) && IsTileWalkable(up)) {
-      neighbors.Add(up);
+    if (playerShip.MoveOrders.Count == 4 && state == State.BetweenRounds) {
+      state = State.CalculateMoves;
     }
-
-    if (IsTileInBounds(down) && IsTileWalkable(down)) {
-      neighbors.Add(down);
-    }
-
-    if (IsTileInBounds(left) && IsTileWalkable(left)) {
-      neighbors.Add(left);
-    }
-
-    if (IsTileInBounds(right) && IsTileWalkable(right)) {
-      neighbors.Add(right);
-    }
-
-    return neighbors;
   }
 
   private bool IsTileInBounds(Vector2I gridPos)
   {
-    return gridPos.X >= 0 && gridPos.X < size && gridPos.Y >= 0 && gridPos.Y < size;
+    return gridPos.X >= 0 && gridPos.X < size.X&& gridPos.Y >= 0 && gridPos.Y < size.Y;
   }
 
-  private bool IsTileWalkable(Vector2I gridPos)
-  {
-    return !blockedTiles[gridPos] && !allShips.ContainsKey(gridPos);
-  }
-
-  private List<Vector2I> ReconstructPath(PathNode node)
-  {
-    var path = new List<Vector2I>();
-
-    while (node != null)
-    {
-      path.Add(node.GridPosition);
-      node = node.Parent;
-    }
-
-    path.Reverse(); // Start -> Target
-    return path;
-  }
-
-  private static float HeuristicCost(Vector2I start, Vector2I target)
-  {
-    return Mathf.Abs(start.X - target.X) + Mathf.Abs(start.Y - target.Y);
-  }
-
-  private bool HasLineOfSight(Vector2I start, Vector2I target)
-  {
-    // Get all the tiles along the line from `start` to `target`
-    var lineTiles = GetLineTiles(start, target);
-
-    // Check if all tiles (except start and target) are walkable
-    foreach (var tile in lineTiles)
-    {
-      if (tile == start || tile == target)
-      {
-        continue; // Skip start and target tiles
-      }
-
-      // Check if the tile is blocked
-      if (blockedTiles[tile])
-      {
-        return false; // Line of sight is blocked
-      }
-    }
-
-    return true; // No obstacles found, line of sight is clear
-  }
-
-  private List<Vector2I> GetLineTiles(Vector2I start, Vector2I target)
-  {
-    // Bresenham's Line Algorithm for integer grid positions
-    var line = new List<Vector2I>();
-
-    int dx = Mathf.Abs(target.X - start.X);
-    int dy = Mathf.Abs(target.Y - start.Y);
-
-    int sx = start.X < target.X ? 1 : -1;
-    int sy = start.Y < target.Y ? 1 : -1;
-
-    int err = dx - dy;
-
-    int x = start.X;
-    int y = start.Y;
-
-    while (true)
-    {
-      line.Add(new Vector2I(x, y));
-
-      if (x == target.X && y == target.Y)
-      {
-        break;
-      }
-
-      int e2 = 2 * err;
-
-      if (e2 > -dy)
-      {
-        err -= dy;
-        x += sx;
-      }
-
-      if (e2 < dx)
-      {
-        err += dx;
-        y += sy;
-      }
-    }
-
-    return line;
-  }
 }

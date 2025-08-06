@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bldr1c16xe151"]
+
+[ext_resource type="Texture2D" uid="uid://cbl5krdwvasht" path="res://sprites/fantasytiles/wind-north.png" id="1_3v78w"]
+
+[node name="WindNortrh" type="Node2D"]
+
+[node name="Wind-north" type="Sprite2D" parent="."]
+texture = ExtResource("1_3v78w")

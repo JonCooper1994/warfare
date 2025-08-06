@@ -7,6 +7,7 @@
 script = ExtResource("1_bkocf")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+z_index = 10
 position = Vector2(0, -3)
 texture = ExtResource("2_bkocf")
 hframes = 8

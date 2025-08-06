@@ -1,20 +1,34 @@
-[gd_scene load_steps=9 format=3 uid="uid://cyslbf1bw7mh6"]
+[gd_scene load_steps=15 format=3 uid="uid://cyslbf1bw7mh6"]
 
 [ext_resource type="Script" uid="uid://cy06sv7qo58h0" path="res://src/Battle/Battle.cs" id="1_3tgvd"]
-[ext_resource type="PackedScene" uid="uid://fkc2sk4ml57j" path="res://src/Battle/Tile.tscn" id="2_m5moa"]
+[ext_resource type="PackedScene" uid="uid://fkc2sk4ml57j" path="res://src/Battle/TileScenes/Tile.tscn" id="2_m5moa"]
+[ext_resource type="PackedScene" uid="uid://vm7dvkip28qm" path="res://src/Battle/TileScenes/TileBorder.tscn" id="3_jjwv5"]
 [ext_resource type="PackedScene" uid="uid://dr1n3rlnh87c2" path="res://src/Battle/blockers/island.tscn" id="3_x1r37"]
 [ext_resource type="PackedScene" uid="uid://crx3prggatu4g" path="res://src/Battle/blockers/rocks1.tscn" id="4_jjwv5"]
 [ext_resource type="PackedScene" uid="uid://b20el00o1suur" path="res://src/Battle/blockers/rocks2.tscn" id="5_rdrqi"]
 [ext_resource type="PackedScene" uid="uid://br6725jsokm1x" path="res://src/Battle/blockers/rocks3.tscn" id="6_55fmo"]
 [ext_resource type="PackedScene" uid="uid://y4ie4ivvqi0a" path="res://src/Pawn/Ship.tscn" id="7_a3dvg"]
 [ext_resource type="PackedScene" uid="uid://bp2mtadq5iqr4" path="res://src/Battle/Hand.tscn" id="7_subhu"]
+[ext_resource type="PackedScene" uid="uid://dbvhjsliy04pv" path="res://src/Battle/blockers/bigrock.tscn" id="8_rdrqi"]
+[ext_resource type="PackedScene" uid="uid://bldr1c16xe151" path="res://src/Battle/WindScenes/WindNorth.tscn" id="9_kx27b"]
+[ext_resource type="PackedScene" uid="uid://b7r145gd85k4s" path="res://src/Battle/WindScenes/WindEast.tscn" id="10_i7mr2"]
+[ext_resource type="PackedScene" uid="uid://bb0rscglaa6a2" path="res://src/Battle/WindScenes/WindWest.tscn" id="11_47ir5"]
+[ext_resource type="PackedScene" uid="uid://bapv5fxrahtee" path="res://src/Battle/WindScenes/WindSouth.tscn" id="12_6xdvr"]
 
 [node name="Battle" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_3tgvd")
 tileScene = ExtResource("2_m5moa")
-blockerScenes = Array[PackedScene]([ExtResource("3_x1r37"), ExtResource("4_jjwv5"), ExtResource("5_rdrqi"), ExtResource("6_55fmo")])
+borderTileScene = ExtResource("3_jjwv5")
+obstacleScenes = Array[PackedScene]([ExtResource("4_jjwv5"), ExtResource("5_rdrqi"), ExtResource("6_55fmo"), ExtResource("3_x1r37"), ExtResource("8_rdrqi")])
+windScenes = Dictionary[int, PackedScene]({
+3: ExtResource("9_kx27b"),
+4: ExtResource("10_i7mr2"),
+5: ExtResource("11_47ir5"),
+6: ExtResource("12_6xdvr")
+})
 playerShipScene = ExtResource("7_a3dvg")
-size = 15
+size = Vector2i(15, 15)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 254)

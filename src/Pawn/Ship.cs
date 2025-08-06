@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Warfare.Battle;
 
@@ -19,17 +20,22 @@ public partial class Ship : Node2D {
   public bool IsMoving;
 
   public Direction Direction = Direction.North;
-  private float currentRotation;
+  public float CurrentRotation;
   public Vector2I GridPosition;
 
   public Sprite2D sprite;
   private int frames;
   private float anglePerFrame;
 
-  private List<Vector2> currentMovePath = new();
-  private List<float> currentRotationPath = new();
+  public List<Vector2> FullGridPath = new();
+  public List<float> CurrentRotationPath = new();
+
+  public FinalGridPath FinalGridPath;
+  public float CollisionPoint;
 
   private float moveTimeElapsed = 0.0f;
+
+  public List<Move> MoveOrders = [];
 
   public override void _Ready()
   {
@@ -38,59 +44,85 @@ public partial class Ship : Node2D {
     anglePerFrame = 360 / frames;
   }
 
-  public override void _Process(double delta) {
-    if (IsMoving) {
-      moveTimeElapsed += 0.0f;
-      AnimateMove((float)delta);
-    }
-  }
-
-
-  public void ExecuteMove(Move move) {
-    if (IsMoving) {return;}
-
-    var initialDirection = Direction;
-    var initialPosition = GridPosition;
-
-    GridPosition = move.positionChange(initialDirection, initialPosition);
-    Direction = move.directionChange(Direction);
-
-    var gridPath = move.pathTaken(initialDirection, initialPosition);
-
-    currentMovePath.Clear();
-    foreach (var pos in gridPath) {
-     currentMovePath.Add(GridUtils.GridToWorldPos(pos));
-    }
-
-    currentRotationPath = [initialDirection.RotationDegrees(), Direction.RotationDegrees()];
-
+  public void ResetTurn() {
+    FullGridPath.Clear();
+    CurrentRotationPath.Clear();
+    FinalGridPath = new(Direction, new());
     moveTimeElapsed = 0.0f;
-
-    IsMoving = true;
   }
 
-  public void AnimateMove(float delta) {
-    moveTimeElapsed += delta;
-    var t = moveTimeElapsed / 1.0f;
+  public void ResetRound() {
+    MoveOrders.Clear();
+  }
 
-    currentRotation = Mathf.RadToDeg(Mathf.LerpAngle(Mathf.DegToRad(currentRotationPath[0]), Mathf.DegToRad(currentRotationPath[1]), t));
+  public override void _Process(double delta) {
+  }
 
-    if (currentMovePath.Count == 3) {
-      Position = QuadraticBezier(currentMovePath[0], currentMovePath[1], currentMovePath[2], t);
+  public bool AnimateMove(float delta) {
+    var t = Mathf.Ease(moveTimeElapsed / 1.5f, -1.5f);
+    GD.Print("T:" + t);
+
+    CurrentRotation = Mathf.RadToDeg(Mathf.LerpAngle(Mathf.DegToRad(CurrentRotationPath[0]), Mathf.DegToRad(CurrentRotationPath[1]), t));
+
+    if (FullGridPath.Count == 3) {
+      AnimateTurn(t);
     }
     else {
-      Position = currentMovePath[0].Lerp(currentMovePath[1], t);
+      AnimateForward(t);
     }
 
-    GD.Print(currentRotation);
-    GD.Print(sprite.Frame);
+    sprite.Frame = mod(Mathf.RoundToInt(CurrentRotation / anglePerFrame), frames);
 
-    sprite.Frame = Mathf.RoundToInt(currentRotation / anglePerFrame) % frames;
+    moveTimeElapsed += delta;
 
-    if (moveTimeElapsed >= 1.0f) {
-      IsMoving = false;
+    if (moveTimeElapsed >= 1.5f) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public int mod(int x, int m) {
+    return ((x % m) + m) % m;
+  }
+
+  public void AnimateForward(float elapsedTurnRatio) {
+    List<Vector2> intendedMovementPath = new();
+
+    foreach (var gridPos in FullGridPath)
+    {
+      intendedMovementPath.Add(GridUtils.GridToWorldPos(gridPos));
+    }
+
+    var actualFinalPosition = GridUtils.GridToWorldPos(FinalGridPath.path.Last());
+
+    if(elapsedTurnRatio < CollisionPoint) {
+      Position = intendedMovementPath[0].Lerp(intendedMovementPath[1], elapsedTurnRatio);
+
+    } else {
+      var startPos = intendedMovementPath[0].Lerp(intendedMovementPath[1], CollisionPoint);
+      Position = startPos.Lerp(actualFinalPosition, (elapsedTurnRatio - CollisionPoint) / (1.0f - CollisionPoint));
     }
   }
+
+  public void AnimateTurn(float elapsedTurnRatio) {
+    List<Vector2> intendedMovementPath = new();
+
+    foreach (var gridPos in FullGridPath)
+    {
+      intendedMovementPath.Add(GridUtils.GridToWorldPos(gridPos));
+    }
+
+    var actualFinalPosition = GridUtils.GridToWorldPos(FinalGridPath.path.Last());
+
+    if(elapsedTurnRatio < CollisionPoint) {
+      Position = QuadraticBezier(intendedMovementPath[0], intendedMovementPath[1], intendedMovementPath[2], elapsedTurnRatio);
+    } else {
+      var startPos = QuadraticBezier(intendedMovementPath[0], intendedMovementPath[1], intendedMovementPath[2], CollisionPoint);
+      Position = startPos.Lerp(actualFinalPosition, (elapsedTurnRatio - CollisionPoint) / (1.0f - CollisionPoint));
+    }
+  }
+
 
   private Vector2 QuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2, float t)
   {
@@ -104,5 +136,6 @@ public partial class Ship : Node2D {
   {
     return firstFloat * (1 - by) + secondFloat * by;
   }
+
 
 }

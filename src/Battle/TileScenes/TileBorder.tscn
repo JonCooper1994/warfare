@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://vm7dvkip28qm"]
+
+[ext_resource type="Script" uid="uid://bqlnukf2a37oj" path="res://src/Battle/TileScenes/Tile.cs" id="1_lgvs7"]
+[ext_resource type="Texture2D" uid="uid://0oixt6hwi1un" path="res://sprites/fantasytiles/water-border.png" id="2_lgvs7"]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("1_lgvs7")
+
+[node name="TileSprite" type="Sprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, 16)
+texture = ExtResource("2_lgvs7")
