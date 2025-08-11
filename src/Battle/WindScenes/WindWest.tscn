@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bb0rscglaa6a2"]
 
-[ext_resource type="Texture2D" uid="uid://dqv2j5wsqtbau" path="res://sprites/fantasytiles/wind-west.png" id="1_ocfrd"]
+[ext_resource type="Texture2D" uid="uid://dqv2j5wsqtbau" path="res://sprites/wind-west.png" id="1_ocfrd"]
 
 [node name="WindNortrh" type="Node2D"]
 

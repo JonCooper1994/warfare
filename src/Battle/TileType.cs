@@ -17,10 +17,16 @@ public enum TileType {
 }
 
 public static class TileTypeMethods {
-    public static bool IsSolid(this TileType t) => t switch {
+    public static bool BlocksMovement(this TileType t) => t switch {
         TileType.Obstacle => true,
         TileType.Island => true,
         _ => false,
+    };
+
+    public static bool BlocksProjectiles(this TileType t) => t switch {
+      TileType.Obstacle => true,
+      TileType.Island => true,
+      _ => false,
     };
 
     public static bool IsBorder(this TileType t) => t switch {

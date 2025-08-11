@@ -12,10 +12,10 @@ public partial class Battle : Node2D
   [Export] private PackedScene[] obstacleScenes;
   [Export] private Godot.Collections.Dictionary<TileType, PackedScene> windScenes;
 
-
-
-
   [Export] private PackedScene playerShipScene;
+
+  [Export] private PackedScene projectileScene;
+
 
   private Vector2I hoveredGridPos;
   private Ship playerShip;
@@ -34,6 +34,8 @@ public partial class Battle : Node2D
   private Dictionary<Vector2I, Tile> tiles = new();
   private Dictionary<Vector2I, Ship> allShips = new();
 
+  private List<Projectile> projectiles = new();
+
   bool IsPlayerTurn = true;
   private int PlayerEnergy = 5;
 
@@ -41,21 +43,22 @@ public partial class Battle : Node2D
 
   private State state = State.BetweenRounds;
 
+
   enum State {
     BetweenRounds,
     CalculateMoves,
     ExecuteMoves,
     CalculateEnvironmentMoves,
     ExecuteEnvironmentMoves,
-    CalculateShooting,
-    ExecuteShooting,
+    SpawnProjectiles,
+    AnimateProjectiles,
     NextOrder
   }
 
   public override void _Ready()
   {
     GD.Randomize();
-    GetNode<Camera2D>("Camera2D").SetZoom(new Vector2(zoom, zoom));
+    GetNode<Camera2D>("BattleCam").Zoom = new Vector2(zoom, zoom);
 
     tileTypes = new MapGenerator(size).Generate(15, 3, 0);
     foreach (var keyValuePair in tileTypes)
@@ -98,9 +101,23 @@ public partial class Battle : Node2D
     if (state == State.ExecuteEnvironmentMoves) {
       var done = ExecuteMoves((float)delta);
       if (done) {
-        state = State.NextOrder;
+        state = State.SpawnProjectiles;
       }
 
+      return;
+    }
+
+    // CALCULATE SHOOTING
+    if (state == State.SpawnProjectiles) {
+      SpawnProjectiles();
+      state = State.AnimateProjectiles;
+    }
+
+    if (state == State.AnimateProjectiles) {
+      var done = AnimateProjectiles((float)delta);
+      if (done) {
+        state = State.NextOrder;
+      }
       return;
     }
 
@@ -193,7 +210,7 @@ public partial class Battle : Node2D
         //Environment collisions
         if (ship.FinalGridPath.HasCollided()) { continue; }
 
-        if (tileTypes[gridPos].IsSolid()) {
+        if (tileTypes[gridPos].BlocksMovement()) {
           ship.FinalGridPath.Collide(step);
         }
 
@@ -230,6 +247,58 @@ public partial class Battle : Node2D
         ship.CollisionPoint = 99.0f; // NO COLLISION
       }
     }
+  }
+
+  public void SpawnProjectiles() {
+    // Assume ship always shoots both ways for now
+    foreach (var ship in ships) {
+      List<Direction> projectileDirections = new() {
+        ship.Direction.AddLocalDirection(LocalDirection.Left),
+        ship.Direction.AddLocalDirection(LocalDirection.Right),
+      };
+
+      foreach (var projectileDirection in projectileDirections)
+      {
+        var projectileVelocity = projectileDirection.Vector();
+
+        List<Vector2I> projectileGridPath = new();
+
+        for (var i = 1; i <= 4; i++) {
+          var gridPos = ship.GridPosition + (i * projectileVelocity);
+
+          projectileGridPath.Add(gridPos);
+
+          if(tileTypes[gridPos].BlocksProjectiles()) {
+            break;
+          }
+        }
+
+        SpawnProjectile(ship.GridPosition, projectileGridPath.Last());
+      }
+    }
+  }
+
+  public void SpawnProjectile(Vector2I startPos, Vector2I endPos) {
+    var projectile = projectileScene.Instantiate<Projectile>();
+
+    projectiles.Add(projectile);
+
+    projectile.Init(startPos, endPos);
+
+    CallDeferred("add_child", projectile);
+  }
+
+  public bool AnimateProjectiles(float delta) {
+    List<Projectile> projectilesToRemove = new();
+    foreach (var projectile in projectiles) {
+      if (projectile.Animate(delta)) {
+        projectilesToRemove.Add(projectile);
+      }
+    }
+
+    projectiles.RemoveAll(x => projectilesToRemove.Contains(x));
+
+    return projectiles.Count == 0;
   }
 
   private void SpawnTile(Vector2I gridPos, TileType tileType) {

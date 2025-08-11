@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bc4xtdi2vs7bi"]
 
-[ext_resource type="Texture2D" uid="uid://cptl0yj0pf54h" path="res://sprites/fantasytiles/tree-evergreen.png" id="1_nva6q"]
+[ext_resource type="Texture2D" uid="uid://cptl0yj0pf54h" path="res://sprites/OldSprites/fantasytiles/tree-evergreen.png" id="1_nva6q"]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(0, -2)

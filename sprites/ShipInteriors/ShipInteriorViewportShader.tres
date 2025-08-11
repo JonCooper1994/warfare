@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cie60i2u7qvrl"]
+
+[ext_resource type="Shader" uid="uid://cju1mp2p642rr" path="res://sprites/ShipInteriors/ShipViewportShader.gdshader" id="1_clgbx"]
+[ext_resource type="Texture2D" uid="uid://ctsthaxjxtkbq" path="res://sprites/shipbackgroundmask.png" id="2_25nag"]
+
+[resource]
+shader = ExtResource("1_clgbx")
+shader_parameter/mask_sampler = ExtResource("2_25nag")
+shader_parameter/mask_offset = Vector2(0, 0)

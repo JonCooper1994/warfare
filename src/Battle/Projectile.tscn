@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://csvp3d3w63i1b"]
+
+[ext_resource type="Texture2D" uid="uid://cq7jsyjfa5re" path="res://sprites/cannonball.png" id="1_4f6ko"]
+[ext_resource type="Script" uid="uid://drifh72j2t3p2" path="res://src/Battle/Projectile.cs" id="1_ijnh4"]
+[ext_resource type="Texture2D" uid="uid://sp6136fc484h" path="res://sprites/projectileshadow.png" id="2_8g32i"]
+
+[node name="Projectile" type="Node2D"]
+z_index = 50
+script = ExtResource("1_ijnh4")
+
+[node name="Projectileshadow" type="Sprite2D" parent="."]
+texture = ExtResource("2_8g32i")
+
+[node name="ProjectileSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_4f6ko")

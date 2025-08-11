@@ -62,12 +62,14 @@ public partial class Ship : Node2D {
     var t = Mathf.Ease(moveTimeElapsed / 1.5f, -1.5f);
     GD.Print("T:" + t);
 
-    CurrentRotation = Mathf.RadToDeg(Mathf.LerpAngle(Mathf.DegToRad(CurrentRotationPath[0]), Mathf.DegToRad(CurrentRotationPath[1]), t));
+    if (CurrentRotationPath.Count > 0) {
+      CurrentRotation = Mathf.RadToDeg(Mathf.LerpAngle(Mathf.DegToRad(CurrentRotationPath[0]), Mathf.DegToRad(CurrentRotationPath[1]), t));
+    }
 
     if (FullGridPath.Count == 3) {
       AnimateTurn(t);
     }
-    else {
+    if(FullGridPath.Count == 2) {
       AnimateForward(t);
     }
 

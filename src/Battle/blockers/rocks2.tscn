@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b20el00o1suur"]
 
-[ext_resource type="Texture2D" uid="uid://8vncj158ss4y" path="res://sprites/fantasytiles/rocks2.png" id="1_47e7w"]
+[ext_resource type="Texture2D" uid="uid://8vncj158ss4y" path="res://sprites/rocks2.png" id="1_47e7w"]
 
 [node name="Tree" type="Node2D"]
 

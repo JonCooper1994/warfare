@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbt6i4ttdwtru"]
+
+[ext_resource type="Texture2D" uid="uid://dakay18bs2c0t" path="res://sprites/shipbackground.png" id="1_jj6dh"]
+[ext_resource type="Texture2D" uid="uid://bfpdn64t1m23y" path="res://sprites/shipbackground-top.png" id="2_v8nh2"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="BattleUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="BattleUI"]
+z_index = 500
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -279.0
+offset_right = 558.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(0, 279)
+texture = ExtResource("1_jj6dh")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="BattleUI"]
+z_index = 500
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1117.0
+offset_top = 279.0
+offset_right = -559.0
+offset_bottom = 558.0
+grow_vertical = 0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(0, 279)
+texture = ExtResource("2_v8nh2")
+expand_mode = 1

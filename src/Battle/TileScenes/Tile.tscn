@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://fkc2sk4ml57j"]
 
 [ext_resource type="Script" uid="uid://bqlnukf2a37oj" path="res://src/Battle/TileScenes/Tile.cs" id="1_x6t1c"]
-[ext_resource type="Texture2D" uid="uid://b56c6r6xppvl4" path="res://sprites/fantasytiles/water.png" id="2_sr2sm"]
+[ext_resource type="Texture2D" uid="uid://b56c6r6xppvl4" path="res://sprites/water.png" id="2_sr2sm"]
 
 [node name="Tile" type="Node2D"]
 script = ExtResource("1_x6t1c")
