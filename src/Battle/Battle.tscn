@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cyslbf1bw7mh6"]
+[gd_scene load_steps=17 format=3 uid="uid://cyslbf1bw7mh6"]
 
 [ext_resource type="Script" uid="uid://cy06sv7qo58h0" path="res://src/Battle/Battle.cs" id="1_3tgvd"]
 [ext_resource type="PackedScene" uid="uid://fkc2sk4ml57j" path="res://src/Battle/TileScenes/Tile.tscn" id="2_m5moa"]
@@ -15,8 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://bb0rscglaa6a2" path="res://src/Battle/WindScenes/WindWest.tscn" id="11_47ir5"]
 [ext_resource type="PackedScene" uid="uid://bapv5fxrahtee" path="res://src/Battle/WindScenes/WindSouth.tscn" id="12_6xdvr"]
 [ext_resource type="PackedScene" uid="uid://csvp3d3w63i1b" path="res://src/Battle/Projectile.tscn" id="14_6xdvr"]
-[ext_resource type="Material" uid="uid://cie60i2u7qvrl" path="res://sprites/ShipInteriors/ShipInteriorViewportShader.tres" id="15_47ir5"]
-[ext_resource type="PackedScene" uid="uid://dsbejsjaqiy24" path="res://src/Battle/ShipInterior.tscn" id="16_47ir5"]
+[ext_resource type="PackedScene" uid="uid://dsbejsjaqiy24" path="res://src/Battle/ShipInterior/ShipInterior.tscn" id="17_6xdvr"]
 
 [node name="Battle" type="Node2D"]
 y_sort_enabled = true
@@ -32,7 +31,7 @@ windScenes = Dictionary[int, PackedScene]({
 })
 playerShipScene = ExtResource("7_a3dvg")
 projectileScene = ExtResource("14_6xdvr")
-size = Vector2i(15, 15)
+Size = Vector2i(15, 15)
 
 [node name="BattleCam" type="Camera2D" parent="."]
 position = Vector2(64, 223)
@@ -56,16 +55,15 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PlayerShipViewportContainer" type="SubViewportContainer" parent="CanvasLayer/BattleUI2"]
-material = ExtResource("15_47ir5")
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 498.0
-offset_top = -388.0
-offset_right = 1498.0
+offset_top = -488.0
+offset_right = 1698.0
 offset_bottom = 112.0
-pivot_offset = Vector2(0, 500)
+pivot_offset = Vector2(0, 600)
 
 [node name="PlayerShipViewport" type="SubViewport" parent="CanvasLayer/BattleUI2/PlayerShipViewportContainer"]
 disable_3d = true
@@ -73,8 +71,8 @@ transparent_bg = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(1000, 500)
-size_2d_override = Vector2i(1000, 500)
+size = Vector2i(1200, 600)
+size_2d_override = Vector2i(1200, 600)
 render_target_update_mode = 4
 
-[node name="ShipInterior" parent="CanvasLayer/BattleUI2/PlayerShipViewportContainer/PlayerShipViewport" instance=ExtResource("16_47ir5")]
+[node name="ShipInterior" parent="CanvasLayer/BattleUI2/PlayerShipViewportContainer/PlayerShipViewport" instance=ExtResource("17_6xdvr")]

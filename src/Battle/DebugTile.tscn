@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwlemcn0x8grj"]
+
+[ext_resource type="Texture2D" uid="uid://bnl12npaptc1j" path="res://sprites/DebugSprites/TileDebuggerGreen.png" id="1_fnjv5"]
+
+[node name="DebugTile" type="Node2D"]
+
+[node name="TileDebuggerGreen" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.360784)
+z_index = 100
+texture = ExtResource("1_fnjv5")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://h6rhdrmuykhv"]
+
+[ext_resource type="Texture2D" uid="uid://dinnruarpamsq" path="res://sprites/DebugSprites/debugdot.png" id="1_g8f0t"]
+
+[node name="DebugTile" type="Node2D"]
+
+[node name="Debugdot" type="Sprite2D" parent="."]
+z_index = 200
+texture = ExtResource("1_g8f0t")

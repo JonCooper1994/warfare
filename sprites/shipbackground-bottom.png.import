@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biqyu3dmj3reo"
-path="res://.godot/imported/wall2.png-f86269526e9cc5a12438b00e42e086a0.ctex"
+uid="uid://dwr780cs8215l"
+path="res://.godot/imported/shipbackground-bottom.png-bc6ea25166e2f8df8993e2274ba9e71b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ShipInteriors/wall2.png"
-dest_files=["res://.godot/imported/wall2.png-f86269526e9cc5a12438b00e42e086a0.ctex"]
+source_file="res://sprites/shipbackground-bottom.png"
+dest_files=["res://.godot/imported/shipbackground-bottom.png-bc6ea25166e2f8df8993e2274ba9e71b.ctex"]
 
 [params]
 

@@ -16,7 +16,6 @@ public partial class Battle : Node2D
 
   [Export] private PackedScene projectileScene;
 
-
   private Vector2I hoveredGridPos;
   private Ship playerShip;
   private Hand hand;
@@ -28,9 +27,9 @@ public partial class Battle : Node2D
   private float zoom = 2.0f;
 
   [Export]
-  private Vector2I size;
+  public Vector2I Size;
 
-  private Dictionary<Vector2I, TileType> tileTypes = new();
+  public Dictionary<Vector2I, TileType> TileTypes = new();
   private Dictionary<Vector2I, Tile> tiles = new();
   private Dictionary<Vector2I, Ship> allShips = new();
 
@@ -43,8 +42,10 @@ public partial class Battle : Node2D
 
   private State state = State.BetweenRounds;
 
+  private AIData testAiData;
 
   enum State {
+    AIOrders,
     BetweenRounds,
     CalculateMoves,
     ExecuteMoves,
@@ -60,8 +61,8 @@ public partial class Battle : Node2D
     GD.Randomize();
     GetNode<Camera2D>("BattleCam").Zoom = new Vector2(zoom, zoom);
 
-    tileTypes = new MapGenerator(size).Generate(15, 3, 0);
-    foreach (var keyValuePair in tileTypes)
+    TileTypes = new MapGenerator(Size).Generate(6, 3, 0);
+    foreach (var keyValuePair in TileTypes)
     {
       var gridPos = keyValuePair.Key;
       var tileType = keyValuePair.Value;
@@ -69,10 +70,20 @@ public partial class Battle : Node2D
       SpawnTile(gridPos, tileType);
     }
 
-    SpawnShip(new Vector2I(5, 5));
+    SpawnShip(new Vector2I(5, 5), true);
+    SpawnShip(new Vector2I(12, 12), false);
+
+    Debugger.Init();
+    testAiData = new(this);
   }
 
   public override void _Process(double delta) {
+    if (state == State.AIOrders) {
+      CalculateAIOrders();
+      state = State.CalculateMoves;
+      return;
+    }
+
     // CALCULATE MOVES
     if (state == State.CalculateMoves) {
       CalculateMoves();
@@ -135,6 +146,19 @@ public partial class Battle : Node2D
     }
   }
 
+  private void CalculateAIOrders() {
+    var aiData = new AIData(this);
+
+    foreach (var ship in ships) {
+      if(ship.IsPlayer != true) {
+        ShipAI ai = new(ship, this, aiData);
+
+        var orders = ai.GenerateOrders();
+        ship.Orders = orders;
+      }
+    }
+  }
+
   public void ResetAll() {
     GD.Print("RESET");
     CurrentOrderIndex = 0;
@@ -147,19 +171,19 @@ public partial class Battle : Node2D
     foreach(var ship in ships) {
       ship.ResetTurn();
 
-      var order = ship.MoveOrders[CurrentOrderIndex];
+      var order = ship.Orders[CurrentOrderIndex];
 
       ship.CurrentRotationPath = new() {
         ship.CurrentRotation,
-        order.directionChange(ship.Direction).RotationDegrees(),
+        order.Move.DirectionChange(ship.Direction).RotationDegrees(),
       };
 
       ship.FinalGridPath = new(
         ship.Direction,
-        order.pathTaken(ship.Direction, ship.GridPosition)
+        order.Move.pathTaken(ship.Direction, ship.GridPosition)
       );
 
-      ship.Direction = order.directionChange(ship.Direction);
+      ship.Direction = order.Move.DirectionChange(ship.Direction);
     }
 
     ProcessCollisions();
@@ -169,7 +193,7 @@ public partial class Battle : Node2D
     foreach(var ship in ships) {
       ship.ResetTurn();
 
-      var tile = tileTypes[ship.GridPosition];
+      var tile = TileTypes[ship.GridPosition];
 
       ship.FinalGridPath = new(ship.Direction, tile.PushPath(ship.GridPosition));
     }
@@ -210,7 +234,7 @@ public partial class Battle : Node2D
         //Environment collisions
         if (ship.FinalGridPath.HasCollided()) { continue; }
 
-        if (tileTypes[gridPos].BlocksMovement()) {
+        if (TileTypes[gridPos].BlocksMovement()) {
           ship.FinalGridPath.Collide(step);
         }
 
@@ -252,13 +276,13 @@ public partial class Battle : Node2D
   public void SpawnProjectiles() {
     // Assume ship always shoots both ways for now
     foreach (var ship in ships) {
-      List<Direction> projectileDirections = new() {
-        ship.Direction.AddLocalDirection(LocalDirection.Left),
-        ship.Direction.AddLocalDirection(LocalDirection.Right),
-      };
-
-      foreach (var projectileDirection in projectileDirections)
+      foreach (var keyValuePair in ship.Orders[CurrentOrderIndex].cannonsFired)
       {
+        if (keyValuePair.Value == false) {
+          continue;
+        }
+
+        var projectileDirection = ship.Direction.AddLocalDirection(keyValuePair.Key);
         var projectileVelocity = projectileDirection.Vector();
 
         List<Vector2I> projectileGridPath = new();
@@ -268,13 +292,14 @@ public partial class Battle : Node2D
 
           projectileGridPath.Add(gridPos);
 
-          if(tileTypes[gridPos].BlocksProjectiles()) {
+          if(TileTypes[gridPos].BlocksProjectiles()) {
             break;
           }
         }
 
         SpawnProjectile(ship.GridPosition, projectileGridPath.Last());
       }
+
     }
   }
 
@@ -306,33 +331,42 @@ public partial class Battle : Node2D
     var tileSceneToSpawn = tileType.IsBorder() ? borderTileScene : tileScene;
 
     var newTile = tileSceneToSpawn.Instantiate<Tile>();
-    newTile.Position = GridUtils.GridToWorldPos(gridPos);
+    newTile.Position = BattleGridUtils.GridToWorldPos(gridPos);
     tiles.Add(gridPos, newTile);
     CallDeferred("add_child", newTile);
 
     if (tileType == TileType.Obstacle) {
       var randomIndex = (int)(GD.Randi() % obstacleScenes.Length);
       var newObstacle = obstacleScenes[randomIndex].Instantiate<Node2D>();
-      newObstacle.Position = GridUtils.GridToWorldPos(gridPos);
+      newObstacle.Position = BattleGridUtils.GridToWorldPos(gridPos);
       CallDeferred("add_child", newObstacle);
     }
 
     if (tileType == TileType.PushNorth || tileType == TileType.PushWest || tileType == TileType.PushSouth || tileType == TileType.PushEast) {
       var newWind = windScenes[tileType].Instantiate<Node2D>();
-      newWind.Position = GridUtils.GridToWorldPos(gridPos);
+      newWind.Position = BattleGridUtils.GridToWorldPos(gridPos);
       CallDeferred("add_child", newWind);
     }
   }
 
-  private void SpawnShip(Vector2I gridPos) {
+  private void SpawnShip(Vector2I gridPos, bool isPlayer) {
     Ship newShip;
     newShip = playerShipScene.Instantiate<Ship>();
 
-    playerShip = newShip;
+    if (isPlayer) {
+      playerShip = newShip;
+      newShip.IsPlayer = true;
+      newShip.faction = Faction.Player;
+    }
+    else {
+      newShip.faction = Faction.Enemy;
+    }
+
     ships.Add(newShip);
 
-    newShip.Position = GridUtils.GridToWorldPos(gridPos);
+    newShip.Position = BattleGridUtils.GridToWorldPos(gridPos);
     newShip.GridPosition = gridPos;
+
     allShips.Add(gridPos, newShip);
 
     CallDeferred("add_child", newShip);
@@ -340,31 +374,93 @@ public partial class Battle : Node2D
 
   public override void _Input(InputEvent @event)
   {
-    var gridPos = GridUtils.WorldToGridPos(GetGlobalMousePosition());
+    var gridPos = BattleGridUtils.WorldToGridPos(GetGlobalMousePosition());
 
     hoveredGridPos = gridPos;
 
     if(Input.IsKeyPressed(Key.Left)) {
-      playerShip.MoveOrders.Add(Move.Left);
+      playerShip.Orders.Add(Order.Left());
     }
 
     if(Input.IsKeyPressed(Key.Right))
     {
-      playerShip.MoveOrders.Add(Move.Right);
+      playerShip.Orders.Add(Order.Right());
     }
 
     if (Input.IsKeyPressed(Key.Up)) {
-      playerShip.MoveOrders.Add(Move.Forward);
+      playerShip.Orders.Add(Order.Forward());
     }
 
-    if (playerShip.MoveOrders.Count == 4 && state == State.BetweenRounds) {
-      state = State.CalculateMoves;
+    if (Input.IsKeyPressed(Key.D)) {
+      Debugger.Clear();
+      testAiData = new(this);
+      testAiData.DebugPlayerShipProbabilities(3);
     }
+
+    if (playerShip.Orders.Count == 4 && state == State.BetweenRounds) {
+      state = State.AIOrders;
+    }
+  }
+
+  public Vector2I PredictedPosition(Move move, Direction dir, Vector2I pos) {
+    var pathTaken = move.pathTaken(dir, pos);
+    pathTaken = PathAfterCollisions(pathTaken);
+
+    if(pathTaken.Count > 0) {
+      pos = pathTaken.Last();
+    }
+
+    // Forced movement from wind
+    var pushPath = TileTypes[pos].PushPath(pos);
+    pushPath = PathAfterCollisions(pushPath);
+
+    if(pushPath.Count > 0) {
+      pos = pushPath.Last();
+    }
+
+    return pos;
+  }
+
+  public int PredictedCollisionCount(Move move, Direction dir, Vector2I pos) {
+    int collisionCount = 0;
+
+    var intendedPath = move.pathTaken(dir, pos);
+    var intendedPathAfterCollisions = PathAfterCollisions(intendedPath);
+
+    if(intendedPath.Count != intendedPathAfterCollisions.Count) {
+      collisionCount++;
+    }
+
+    var pushPath = TileTypes[pos].PushPath(pos);
+    var pushPathAfterCollisions = PathAfterCollisions(pushPath);
+
+    if (pushPath.Count != pushPathAfterCollisions.Count) {
+      collisionCount++;
+    }
+
+    return collisionCount;
+  }
+
+  public List<Vector2I> PathAfterCollisions(List<Vector2I> path) {
+    var result = new List<Vector2I>();
+
+    foreach (var gridPos in path) {
+      if(!IsTileInBounds(gridPos) || TileTypes[gridPos].BlocksMovement()) {
+        break;
+      }
+      result.Add(gridPos);
+    }
+
+    return result;
+  }
+
+  public Direction PredictedDirection(Move move, Direction dir, Vector2 pos) {
+    return move.DirectionChange(dir);
   }
 
   private bool IsTileInBounds(Vector2I gridPos)
   {
-    return gridPos.X >= 0 && gridPos.X < size.X&& gridPos.Y >= 0 && gridPos.Y < size.Y;
+    return gridPos.X >= 0 && gridPos.X < Size.X&& gridPos.Y >= 0 && gridPos.Y < Size.Y;
   }
 
 }

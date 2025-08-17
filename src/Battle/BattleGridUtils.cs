@@ -2,22 +2,11 @@ namespace Warfare.Battle;
 
 using Godot;
 
-
-public enum Direction {
-  Up,
-  Down,
-  Left,
-  Right
-}
-
-
-
-public class GridUtils {
+public class BattleGridUtils {
   public static int tileWidth = 64;
   public static int tileHeight = 32;
 
   public static int halfHeight = tileHeight / 2;
-
 
   public static Vector2 GridToWorldPos(Vector2 gridPos) {
     var isoX = (gridPos.X - gridPos.Y) * (tileWidth / 2.0f);

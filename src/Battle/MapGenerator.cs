@@ -39,12 +39,10 @@ public class MapGenerator(Vector2I size) {
 
     tiles.Clear();
 
-    size = new(15, 15);
     GD.Print(size);
 
 		for (int x = 0; x < size.X; x++){
 			for (int y = 0; y < size.Y; y++){
-        GD.Print("test:" + new Vector2I(x, y));
 				tiles.Add(new(x, y), TileType.Empty);
 			}
 		}

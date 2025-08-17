@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwx0r1obdk2w3"
-path="res://.godot/imported/wall.png-248b70a56ec1e2c7a08494b717fc7c27.ctex"
+uid="uid://b7yojmr4n1omr"
+path="res://.godot/imported/water-level-low.png-acf63b6dd340dcf471bec28aa4d6c075.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ShipInteriors/wall.png"
-dest_files=["res://.godot/imported/wall.png-248b70a56ec1e2c7a08494b717fc7c27.ctex"]
+source_file="res://sprites/ShipInteriors/water-level-low.png"
+dest_files=["res://.godot/imported/water-level-low.png-acf63b6dd340dcf471bec28aa4d6c075.ctex"]
 
 [params]
 

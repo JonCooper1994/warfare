@@ -28,8 +28,8 @@ public partial class Projectile : Node2D {
     StartGridPos = startGridPos;
     TargetGridPos = targetGridPos;
 
-    StartWorldPos = GridUtils.GridToWorldPos(StartGridPos);
-    TargetWorldPos = GridUtils.GridToWorldPos(TargetGridPos);
+    StartWorldPos = BattleGridUtils.GridToWorldPos(StartGridPos);
+    TargetWorldPos = BattleGridUtils.GridToWorldPos(TargetGridPos);
 
     GridDistance = Mathf.RoundToInt((StartGridPos - TargetGridPos).Length());
 

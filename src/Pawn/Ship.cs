@@ -35,7 +35,10 @@ public partial class Ship : Node2D {
 
   private float moveTimeElapsed = 0.0f;
 
-  public List<Move> MoveOrders = [];
+  public List<Order> Orders = [];
+
+  public bool IsPlayer;
+  public Faction faction;
 
   public override void _Ready()
   {
@@ -52,7 +55,7 @@ public partial class Ship : Node2D {
   }
 
   public void ResetRound() {
-    MoveOrders.Clear();
+    Orders.Clear();
   }
 
   public override void _Process(double delta) {
@@ -60,7 +63,6 @@ public partial class Ship : Node2D {
 
   public bool AnimateMove(float delta) {
     var t = Mathf.Ease(moveTimeElapsed / 1.5f, -1.5f);
-    GD.Print("T:" + t);
 
     if (CurrentRotationPath.Count > 0) {
       CurrentRotation = Mathf.RadToDeg(Mathf.LerpAngle(Mathf.DegToRad(CurrentRotationPath[0]), Mathf.DegToRad(CurrentRotationPath[1]), t));
@@ -93,10 +95,10 @@ public partial class Ship : Node2D {
 
     foreach (var gridPos in FullGridPath)
     {
-      intendedMovementPath.Add(GridUtils.GridToWorldPos(gridPos));
+      intendedMovementPath.Add(BattleGridUtils.GridToWorldPos(gridPos));
     }
 
-    var actualFinalPosition = GridUtils.GridToWorldPos(FinalGridPath.path.Last());
+    var actualFinalPosition = BattleGridUtils.GridToWorldPos(FinalGridPath.path.Last());
 
     if(elapsedTurnRatio < CollisionPoint) {
       Position = intendedMovementPath[0].Lerp(intendedMovementPath[1], elapsedTurnRatio);
@@ -112,10 +114,10 @@ public partial class Ship : Node2D {
 
     foreach (var gridPos in FullGridPath)
     {
-      intendedMovementPath.Add(GridUtils.GridToWorldPos(gridPos));
+      intendedMovementPath.Add(BattleGridUtils.GridToWorldPos(gridPos));
     }
 
-    var actualFinalPosition = GridUtils.GridToWorldPos(FinalGridPath.path.Last());
+    var actualFinalPosition = BattleGridUtils.GridToWorldPos(FinalGridPath.path.Last());
 
     if(elapsedTurnRatio < CollisionPoint) {
       Position = QuadraticBezier(intendedMovementPath[0], intendedMovementPath[1], intendedMovementPath[2], elapsedTurnRatio);
@@ -125,6 +127,14 @@ public partial class Ship : Node2D {
     }
   }
 
+  public List<Move> AvailableMoves() {
+    return new() {
+      Move.Forward,
+      Move.Left,
+      Move.Right,
+      Move.Skip,
+    };
+  }
 
   private Vector2 QuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2, float t)
   {

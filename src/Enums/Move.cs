@@ -45,7 +45,7 @@ public static class MoveMethods{
     };
 
     // What does this move do to the ships direction?
-    public static Direction directionChange(this Move m, Direction initialDirection) => m switch {
+    public static Direction DirectionChange(this Move m, Direction initialDirection) => m switch {
         Move.Forward => initialDirection,
         Move.Left => initialDirection.Previous(),
         Move.Right => initialDirection.Next(),
